@@ -1,0 +1,61 @@
+#upperPanel{
+     /* border:10px double #000066;
+     border-radius:50px;
+     border-width: thick;
+     padding-left:10px;
+     padding-right:10px;
+     */
+    position: absolute;
+    top:50px;
+    left:200px;
+    right:500px;
+    bottom:100px;
+    display:block;
+    
+}
+
+#chat{
+    
+	margin:10px;
+	padding:10px;
+	background-color:grey;
+    position:absolute;
+    overflow: auto;
+    left:20px;
+    right:0px;
+    top:100px;
+    bottom:0px;
+    height:350px;
+}
+
+
+#bottomPanel{
+    position:absolute;
+    top:500px;
+    bottom:0px;
+    left:220px;
+    right:0px;
+    
+}
+
+#bottomPanel textarea{
+    position:absolute;
+    float:left;
+    top:60px;
+}
+
+#bottomPanel input[type=submit]{
+    position:relative;
+    left:360px;
+    top:40px;
+    
+}
+
+.remaining {
+position:relative;
+top:120px;
+
+}
+
+
+
