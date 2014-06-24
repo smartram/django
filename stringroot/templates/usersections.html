@@ -1,0 +1,15 @@
+
+
+{% if image %}
+<a href="/user/{{username}}"> <img src="{{ image }}" border="0">  </a>
+{% endif %}
+
+<ul>
+
+<li> <a href="/editprofile" class="blockli">editprofile</a> </li>
+<li> <a id="viewfriends" href="/list_friends/{{ username }}" class="blockli">Friends {{ friendscount }} </a> </li>
+<li> <a id="viewfans" href="/view_fans/{{ username }}" class="blockli"> Fans {{ fanscount }} </a> </li>
+<li> <a id="invite" href="/invite" class="blockli"> Invite Friends</a> </li>
+<li> <a id="inbox" href="/inbox" class="blockli" >Message box</a> </li>
+
+</ul>

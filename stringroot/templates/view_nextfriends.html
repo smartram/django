@@ -1,0 +1,20 @@
+
+{% for fri in friends %}
+
+<li>
+
+
+<img class="image_friends profilepic" src="{{ fri.image }}"  alt="">
+
+<a href="/user/{{ fri.username }}" style="vertical-align:top" >  {{ fri.username }} </a>
+{% if currentuser %}
+<button class="deletefriend button blue small" value="/friend_delete/{{ fri.username }}" style="vertical-align:top"> Unfriend </button>
+{% endif %}
+
+ <p class="aboutfriends"> {{ fri.aboutme }} </p>
+ &nbsp;
+
+</li>
+
+{% endfor %}
+

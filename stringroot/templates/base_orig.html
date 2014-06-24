@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>
+ MyLibro.in - Adding Potential to students 
+</title>
+ <h1>
+ MyLibro.in - Adding Potential to students 
+</h1>
+
+<h3>
+here you can view and also upload video tutorials. 
+</h3>
+<link rel="stylesheet" href="/site_media/style.css"
+type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+<script  src="/site_media/jquery.js">
+
+</script>
+
+<script>
+$(document).ready(function(){
+
+$('ul.sub-menu').hide()
+$('ul li a').click(function() {
+    $(this).parent().find('ul.sub-menu').toggle();
+    return false;
+});
+});
+</script>
+
+<div id="left" style=" float:left; width:13%; height: 80%;">
+I am left
+
+<ul>
+    <li><a href="#">C</a>
+	<ul class="sub-menu">
+            <li><a href="#">C Basics</a></li>
+            <li><a href="#">C Advanced</a></li>
+           <li><a href="#">C - MySql Connectivity</a></li>	
+        </ul>
+	</li>
+
+    <li><a href="#">C++</a>
+        <ul class="sub-menu">
+            <li><a href="#">C++ Basics</a></li>
+            <li><a href="#">C++ Advanced</a></li>
+           <li><a href="#">C++ Performance Engineering</a></li>	
+        </ul>
+    </li>
+
+   <li><a href="#">Java</a>
+	<ul class="sub-menu">
+            <li><a href="#">Java Basics</a></li>
+            <li><a href="#">Java Advanced</a></li>
+	    <li><a href="#">Java Performance Engineering</a></li>	
+	</ul>
+
+   </li>
+
+
+    <li><a href="#">Perl</a>
+     <ul class="sub-menu">
+            <li><a href="#">Perl Basics</a></li>
+            <li><a href="#">Perl Advanced</a></li>
+
+    </ul>
+   </li>
+
+    <li><a href="#">Python</a>
+        <ul class="sub-menu">
+            <li><a href="#">Python Basics</a></li>
+            <li><a href="#">Python Advanced</a></li>
+	    <li><a href="#">Python Performance Tips</a></li>	
+        </ul>
+    </li>
+    <li><a href="#">Linux</a>
+	<ul class="sub-menu">
+            <li><a href="#">Linux Basics</a></li>
+            <li><a href="#">Linux Programming</a></li>
+	    <li><a href="#">Linux Administration</a></li>	
+	</ul>
+
+   </li>
+   <li><a href="#">Databases</a>
+	<ul class="sub-menu">
+            <li><a href="#">RDBMS Basics</a></li>
+            <li><a href="#">MySql</a></li>
+	    <li><a href="#">Postgresql</a></li>	
+	</ul>
+
+   </li>
+  <li> <a href="#" >DataStructures </a> </li> 
+</ul>​
+
+</div>
+
+
+
+
+<div id="rightcorner"  style=" float:right ;height:100% font-color:blue";>
+<a href="/">home</a> |
+{% if user.is_authenticated %}
+welcome {{ user.email}}
+(<a href="/logout">logout</a>)
+{% else %}
+<a href="/login/">login</a>
+{% endif %}
+
+
+</div>
+
+<div id="middle"  style=" float:left; width:57%;  padding-bottom: 1em;height:80%">
+videos come here
+</div> 
+
+<div id="right"  style=" float:right; width:30%; height:80%">
+Ad's come here
+</div> 
+
+
+<div id="footer"  style="  clear: both;padding-bottom: 1em; border-top: 1px solid #333;text-align: center; position:relative;">
+Venkat R Edara's Creation.
+</div> 
+</body>
+</html>
+
+

@@ -1,0 +1,416 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="stringroot">
+  <meta name="Description" content="stringroot a new social networking site for sharing photos,pdf,ppt,music">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+ 
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" media="screen">
+ 
+  <link href="/site_media/jquery-ui.css" rel="stylesheet" type="text/css">
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css">
+<link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+<link href="/css/stringroot.alert.css" rel="stylesheet" type="text/css">
+
+
+ </head>
+ <body>
+ {% block external %}
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+   <script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+
+<script type="text/javascript" src="/site_media/jquery.ui.draggable.js">
+
+</script>
+
+	<script type="text/javascript" src="/site_media/jquery.alerts.js">
+
+	</script>
+
+<script type="text/javascript" src="/site_media/resizeimage.js?ver=1">
+
+	</script>
+	
+	<script type="text/javascript" src="/site_media/user_func.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/hide_displayposts.js">
+
+   </script>
+   
+
+	<script type="text/javascript" src="/site_media/hexa_posts_1.js">
+
+	</script>
+
+<script type="text/javascript">
+
+	function getDocHeight() {
+       var D = document;
+       return Math.max(
+          Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+          Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+          Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+     );
+	}
+
+</script>
+
+<script type="text/javascript" >
+
+function checkext()
+{
+    var permittedFileType = ['pdf', 'ppt', 'mp3','flv','gif','jpg','jpeg','png','mp4','pptx'];
+    var fext = $("#hexafile").val().split('.').pop().toLowerCase();
+    var resultFile = validate_filetype(fext, permittedFileType);
+    if(resultFile === false){
+         $("#hexafile").replaceWith("  <input type='file' name='attachment' id='hexafile' onChange='checkext();' multiple /> ");
+
+         var $alertdiv = $('<div style="z-index:32768;background-color:#efefef;font-size:18px;color:grey;text-align:center;padding:20px 10px;\
+         border-bottom:1px solid #bbb;cursor: pointer;overflow: hidden;display:none;opacity: .9;">').addClass('alertmsg').html(" Invalid File. select only jpg,jpeg,gif,flv,mp3,pdf,ppt,docx files ");
+
+		  $("#response").append($alertdiv).html();
+		  $alertdiv.slideDown("slow");
+          setTimeout(function() { $alertdiv.slideUp(200) }, 6000);
+
+
+    }
+    if($("#hexatext").val().length == 0)
+    {
+    $.alerts.okButton=' Ok ';
+    jAlert('please enter title of file in textbox', 'stringroot notification');
+
+    }
+
+  }
+
+function validate_filetype(fext, ftype)
+{
+    for(var num in ftype)
+    {
+        if(fext == ftype[num])
+            return true;
+    }
+
+    return false;
+}
+
+
+</script>
+
+<script type="text/javascript">
+
+
+</script>
+
+<script type="text/javascript">
+ function bind_shared() {
+$("ul a.sharedpost").click(function() {
+	var jthis=$(this);
+	var value="/sharepost/" + $(jthis).attr("id");
+
+	jQuery.extend({
+    	getValues: function(url) {
+        	var result = null;
+        	$.ajax({
+            	url: url,
+            	type: 'get',
+            	dataType: 'json',
+            	async: false,
+            	success: function(data) {
+                	result = data;
+                	$.alerts.okButton=' Ok ';
+					jAlert(result['msg'], 'stringroot notification');
+
+            	}	
+        	});
+         return result;
+    	}
+	});
+
+	var htmlStore = $.getValues(value);
+
+	if (htmlStore['status']==0){
+  		html=htmlStore['html'];
+  		$("#list_posts").prepend(html);
+  		resize_images();
+ 	}
+    
+    return false; // prevent default
+
+}); // end click
+
+}
+
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+bind_shared();
+var bind_delete=function(){
+
+$("ul a.delpost").click(function() {
+
+var jthis=$(this);
+var value="/deletepost/" + $(jthis).attr("id");
+
+jQuery.extend({
+    deleteValues: function(url) {
+        var result = null;
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+                result = data['html'];
+            }
+        });
+       return result;
+    }
+});
+	jConfirm('Are you sure you want to delete this post?', 'Confirmation Dialog', function(r) {
+										
+					if(r==true)
+					{
+					    $(jthis).parent().remove();
+						var htmlStore = $.deleteValues(value);
+
+					}
+						
+						
+						
+	}); // end jConfirm
+	
+  
+   
+    return false; // prevent default
+
+}); // end click
+};
+
+
+	var listItem = $("#userposts");
+    $(window).scroll(function () {
+
+      if($(window).scrollTop() + document.body.clientHeight == getDocHeight()){
+
+
+         jQuery.ajax({
+		 	   type: 'GET',
+
+			   url: '/getnextwallposts',
+		 	   dataType: 'json',
+		 	   success: function(data) {
+     		 	   var htmlcode=data["html"];
+     		 	   var status=data["status"];
+     		 	   $('li').find(".sharedpost").hide();
+     		 	     
+
+     		 	   $(".posts").hover(
+				     function () {
+				       $(this).find(".sharedpost").show();
+				     },
+				     function () {
+				       $(this).find(".sharedpost").hide();
+				     }
+				   );
+				   
+					if(status == 0){
+		               $("#list_posts").append(htmlcode).html();
+		               resize_images();
+		               bind_shared();
+		               bind_delete();
+
+
+		           }
+		           else{
+		               $(window).unbind('scroll');
+						}
+		 	   },
+		 	   async: false,
+		 	   error: function(xhr, textStatus, errorThrown) {
+		 	   alert('An error occurred! ' + errorThrown);
+		 	   },
+		 	   complete:function(){
+
+		 	   }
+
+	   });
+
+
+  	 } /* end if */
+      }); // end window.scroll
+
+
+}); // end doc
+
+</script>
+
+
+<script type="text/javascript" src="/site_media/jquery.liveSearch.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/Search.js">
+
+</script>
+
+<script type="text/javascript" src="site_media/latestwallposts.js">
+</script>
+
+<script type="text/javascript" src="site_media/umayknow.js">
+</script>
+
+	<script type="text/javascript" src="/site_media/browser.js">
+
+	</script>
+
+
+{% endblock %}
+
+
+<!-- </div> -->
+{% include 'header.html' %}
+
+<div class="container_12"  >
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+{% include 'usersections.html' %}
+</div> <!-- end left -->
+
+
+<!--
+<div id="spaceleft" class="container"><p style="color:#25A6E1">{{spaceleft}} MB available</p></div>
+-->
+</div>
+<div class="grid_7"  >
+<div class="container" id="middle">
+<div id="response">
+
+</div>
+
+<form id="hexaform" method="post" action="/hexapost/" enctype="multipart/form-data">
+
+  <textarea max_length="160" cols="30" rows="3" name="hexatext" id="hexatext" onfocus="this.placeholder = ''" placeholder="post here!!"></textarea>
+  <div class="remaining"  >Characters remaining: <span class="count">160</span></div>
+  <br> 
+  <label for="attachment">Attachment</label>
+  <input type="file" name="attachment" id="hexafile" onChange="checkext();" multiple />
+  <br>
+  <input type="submit" class="styled-button-8" value="Post It" id="hexabutton" >
+
+   {% csrf_token %}
+
+</form>
+<img id="loading" width="30px" height="30px" src="/site_media/loader.gif" style="position:relative;left:80px;margin-top:-35px"> </img> 
+
+<br>
+
+<div id="userposts">
+<ul id="list_posts">
+	{% autoescape off %}
+
+    {% for post in posts %}
+
+<li id="{{ post.postid }}" class="posts" >
+<a href="/user/{{ post.username }}"> <img src="{{ post.image }}" alt="" class="profilepic"  > </a>
+
+<p class="para left" >
+<a style="vertical-align:top" href="/user/{{post.username}}"> {{ post.username }} </a> <br>
+{{ post.text }}
+
+{% if post.ftype %}
+{% if post.posttype == 7 or post.posttype == 8 or post.posttype == 9  or post.posttype == 10 %}
+<a href="/postid/{{post.code}}"> <img src="{{post.ftype}}" width="{{post.width}}px" height="{{post.height}}px" alt="image"> </a>
+
+{% else %}
+<a href="/postid/{{post.code}}"> <img width="45" height="45" src="{{post.ftype}}"> </a>
+
+{% endif %}
+
+{% endif %}
+
+ 
+</p>
+<p style="font-size:10px">{{post.timeformat}}</p>&nbsp;
+
+{% if post.is_shared %}
+
+    <p>shared by {{ post.sharingusers }} </p>
+
+ {% endif %}
+
+{% if post.iamowner %}
+<a class="delpost" href="#" id="{{post.postid}}" > delete</a>
+
+{% else %}
+
+  {% if post.sharedbyme %}
+
+  {%else %}
+   <a class="sharedpost" href="#" id="{{post.postid}}" > share </a>
+  {% endif %}
+ 
+{% endif %}
+
+ &nbsp;
+</li>
+
+{% endfor %}
+{% endautoescape %}
+
+</ul>
+</div>
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+
+<div class="container" id="related">
+<h3>Friends You May Know</h3>
+<ul id="umayknow">
+	
+</ul>
+</div>
+
+
+</div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+ </body>
+</html>
+

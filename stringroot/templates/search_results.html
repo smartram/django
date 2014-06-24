@@ -1,0 +1,23 @@
+<ul>
+
+{% for fri in users_list %}
+
+<li class="people">
+
+
+<img class="image_friends" src="{{ fri.image }}" width="45" height="60" />
+
+<a href="/user/{{ fri.username }}" style="vertical-align:top;" >  {{ fri.username }} </a>
+
+</li>
+
+{% endfor %}
+
+{% if showmore %}
+<a href="#" id="more">more </a>
+
+{% endif %}
+</ul>
+
+
+

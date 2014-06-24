@@ -1,0 +1,161 @@
+<html>
+<head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="Memories,Personal Diary App">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+   <meta name="robots" content="NOINDEX,NOFOLLOW" />
+
+  <link rel="stylesheet" type="text/css" href="/css/democss.css" media="screen">
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css">
+<link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+<link href="/css/stringroot.alert.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.min.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.form.js">
+
+</script>
+
+
+<script type="text/javascript" src="/site_media/jquery.ui.draggable.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.alerts.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/memories.js">
+
+</script>
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+
+</head>
+<body>
+<div id="container">
+	<div id="header">
+		<h1>
+Memories you write here are only visible to you. your friends cannot view until you hit share button 
+		</h1>
+	</div>
+	<div id="navigation">
+		
+	</div>
+	<div id="content-container">
+	  <div id="section-navigation">
+			
+	   <form id="memform" method="post" action="/memories/" enctype="multipart/form-data">
+	      <textarea max_length="1024" cols="20" rows="3" name="hexatext" id="hexatext" onfocus="this.placeholder = ''" placeholder="write your memories here!!"></textarea>
+  		 <div class="remaining"  >Characters remaining: <span class="count">1024</span></div>
+  			<br>
+  		{{ form.as_p }}
+  		<label for="attachment">Photo</label>
+  		<input type="file" name="attachment" id="hexafile" onChange="checkext();" >
+  		<br>
+  		<input type="submit" class="styled-button-8" value="Post It" id="hexabutton" >
+   		{% csrf_token %}
+	 </form>
+
+<!--
+<img id="loading" width="30px" height="30px" src="/site_media/loader.gif" style="position:relative;left:80px;margin-top:-35px"> </img> 
+-->
+<div id="recent">
+<p style="display:inline-block;padding:6px; box-shadow:2px 2px 2px #333;" >Recent Memories</p>
+<ul id="recent_added">
+
+
+</ul>
+</div>
+
+		</div>
+		<div id="content">
+		
+		  <div id="response">
+
+		  </div>
+
+
+			<br>
+
+       <div id="userposts" >
+ 		This Month Memories
+
+		<ul id="list_posts">
+
+		{% include "monthmemories.html" %}
+
+		</ul>
+	  </div>
+
+		</div> <!-- end content -->
+		<div id="aside">
+			
+			<h3>Months</h3>
+   <ul id="months list">
+	<li>
+	<a class="memlinks" href="/getmemories/?month=1">Jan </a>
+	</li>
+
+	<li>
+	<a class="memlinks" href="/getmemories/?month=2">Feb</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=3">Mar</a>
+	</li>
+	
+	<li>
+	<a class="memlinks" href="/getmemories/?month=4">Apr</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=5">May</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=6">June</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=7">July</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=8">Aug</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=9">Sep</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=10">Oct</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=11">Nov</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=12">Dec</a>
+	</li>
+	
+	
+   </ul>
+
+	</div>
+		<div id="footer">
+
+		</div>
+	
+	</div>
+</div>
+</body>
+
+</html>

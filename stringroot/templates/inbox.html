@@ -1,0 +1,244 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css" media="screen">
+  <link href="/css/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+
+ <link href="/css/bubble.css" rel="stylesheet" type="text/css"/>
+
+
+ </head>
+ <body>
+ {% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+
+<script type="text/javascript" src="/site_media/jquery-ui.min.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/user_func.js">
+
+	</script>
+	
+	<script type="text/javascript" src="/site_media/friend_func.js">
+
+	</script>
+
+    <script type="text/javascript" src="/site_media/resizeimage.js?ver=1">
+
+	</script>
+	
+<script type="text/javascript" src="/site_media/inbox.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/browser.js">
+
+	</script>
+	
+<script type="text/javascript">
+
+	function getDocHeight() {
+       var D = document;
+       return Math.max(
+          Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+          Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+          Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+     );
+	}
+
+</script>
+
+ <script type="text/javascript">
+
+
+	(function () {
+
+		var listItem = $("#list_messages");
+	    $(window).scroll(function () {
+
+			var $box = $("#userposts");
+
+			var actionurl=$('#scriptvalue').attr('value') ;
+
+    		if($(window).scrollTop() + document.body.clientHeight == getDocHeight()){
+
+
+	         jQuery.ajax({
+			 	   type: 'GET',
+
+				   url: actionurl,
+			 	   dataType: 'json',
+			 	   success: function(data) {
+	     		 	   var htmlcode=data["html"]
+
+			           $("#list_messages").append(htmlcode).html();
+			 	   },
+			 	   async: false,
+			 	   error: function(xhr, textStatus, errorThrown) {
+			 	   alert('An error occurred! ' + errorThrown);
+			 	   },
+			 	   complete:function(){
+
+			 	   }
+
+		   });
+
+	  	 } /* end if */
+	      }); // end window.scroll
+
+
+	}()); // end function
+
+
+
+	</script>
+
+
+{% endblock %}
+
+<input type="hidden" id="scriptvalue"  value='/getnextinboxmsgs' >
+
+
+<!-- </div> -->
+<div class="top_header">
+<div class="container_12"  >
+
+<div class="grid_12"  >
+<div class="alpha grid_2"  >
+<a href="/aboutus.html"><img src="/icons/sitename2.png" border="0" alt="logo" ></a>
+
+</div>
+<div class="push_1 grid_2"  >
+
+</div>
+<div class="push_1 grid_3"  >
+<form method="get" action="" id="search">
+  <input name="q" type="text" size="40" placeholder="Search..." >
+</form>
+
+</div>
+
+<div class="push_1 grid_3 omega">
+
+<div class="push_right">
+<a id="homebutton" href="/"><img src="/icons/btnhomepage.png" border="0" width="40" height="50" alt="">Home</a>
+
+{% if user.is_authenticated %}
+<a href="/logout" title="Sign Out" class="button red">logout</a>
+{% else %}
+<a href="/login/" title="Sign In" class="button orange" >login</a>
+{% endif %}
+
+</div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+<div class="container_12"  >
+
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+<!-- <img src="images/profile_120X124.png" border="0" alt="" >-->
+{% if image %}
+<a href="/user/{{username}}"> <img src="{{ image }}" border="0"/>  </a>
+{% endif %}
+
+<ul>
+
+<li> <a href="/editprofile" class="blockli">editprofile</a> </li>
+
+<li> <a href="/list_friends/{{ username }}" class="blockli">Friends {{ friendscount }} </a> </li>
+<li> <a id="viewfans" href="/view_fans/{{ username }}" class="blockli">Fans {{ fanscount }} </a> </li>
+
+<li> <a id="invite" href="/invite" class="blockli"> Invite Friends</a> </li>
+<li> <a id="inbox" href="/inbox" class="blockli" >Message box</a> </li>
+
+</ul>
+
+</div> <!-- end left -->
+
+</div>
+<div class="grid_7"  >
+<div class="container" id="middle">
+<div id="response">
+
+</div>
+{% if messages %}
+<ul id="list_messages">
+{% for msg in messages %}
+
+<li class="messages" >
+<img src="{{ msg.fromuserimage }}" class="profilepic"  > 
+<a class="frommessages" style="vertical-align:top" href="/viewchat/{{ msg.fromusername }}"> {{ msg.fromusername }} </a>
+
+<button class="delall button blue medium" id="{{msg.fromusername}}" style="vertical-align:top"> delete all </button>
+
+<p class="textparagraph" > <a  href="/viewchat/{{ msg.fromusername }}" class="frommessages" > {{ msg.shorttext }} </a> </p>
+
+
+ &nbsp;
+</li>
+
+{% endfor %}
+</ul>
+
+{% else %}
+<p style="color:blue; text-align:center"> <b> Inbox empty Click <a href="/">Here </a> . </b> </p>
+{% endif %}
+
+
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+<!--
+<div class="container" id="related">
+</div>
+-->
+
+</div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+ </body>
+</html>
+

@@ -1,0 +1,9 @@
+{% for fri in users %}
+
+<li >
+<a href="/user/{{ fri.username }} "> <img src="{{ fri.image }}" alt="" class="profilepic" > </a> 
+<a style="vertical-align:top" href="/user/{{ fri.username }}"  >  {{ fri.username }} </a> 
+
+</li>
+
+{% endfor %}

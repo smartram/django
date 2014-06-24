@@ -1,0 +1,176 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+ 
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css" media="screen">
+ 
+  <link href="/site_media/jquery-ui.css" rel="stylesheet" type="text/css">
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css">
+<link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+<link href="/css/stringroot.alert.css" rel="stylesheet" type="text/css">
+
+
+ </head>
+
+ <body>
+ {% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+   <script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+	
+	<script type="text/javascript" src="/site_media/userinvite.js">
+
+	</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+     $('input[type="submit"]').attr('disabled','disabled');
+     $("#hexabutton").css('background','white');
+     $('textarea').keyup(function() {
+        if($(this).val().length > 0) {
+           $('input[type="submit"]').removeAttr('disabled');
+           $("#hexabutton").css('background', 'orange');
+        }
+        else{
+        
+        $('input[type="submit"]').attr('disabled','disabled');
+     	$("#hexabutton").css('background','white');    
+        }
+        
+     }); //end keyup
+     
+ });
+
+
+
+</script>
+
+ {% endblock %}
+
+<input type="hidden" id="scriptvalue" value='/getnextposts' />
+
+
+<!-- </div> -->
+<div class="top_header">
+<div class="container_12"  >
+
+<div class="grid_12"  >
+<div class="alpha grid_2"  >
+<a href="/aboutus.html"><img src="/icons/sitename2.png" border="0" alt="logo" ></a>
+
+</div>
+<div class="push_1 grid_2"  >
+
+</div>
+<div class="push_1 grid_3"  >
+<form method="get" action="" id="search">
+  <input name="q" type="text" size="40" placeholder="Search..." >
+</form>
+
+</div>
+
+<div class="push_1 grid_3 omega">
+
+<div class="push_right">
+<a id="homebutton" href="/"><img src="/icons/btnhomepage.png" border="0" width="40" height="50" alt="">Home</a>
+
+{% if user.is_authenticated %}
+<a href="/logout" title="Sign Out" class="button red">logout</a>
+{% else %}
+<a href="/login/" title="Sign In" class="button orange" >login</a>
+{% endif %}
+
+</div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+<div class="container_12"  >
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+<!-- <img src="images/profile_120X124.png" border="0" alt="" >-->
+{% if image %}
+<a href="/user/{{username}}"> <img src="{{ image }}" border="0" alt="">  </a>
+{% endif %}
+
+<ul>
+
+<li> <a href="/editprofile" class="blockli">editprofile</a> </li>
+<li> <a href="/list_friends/{{ username }}" class="blockli">Friends  </a> </li>
+<li> <a id="viewfans" href="/view_fans/{{ username }}" class="blockli">Fans </a> </li>
+
+<li> <a id="invite" href="/invite" class="blockli"> Invite Friends</a> </li>
+<li> <a id="inbox" href="/inbox" class="blockli" >Message box</a> </li>
+</ul>
+
+
+</div> <!-- end left -->
+<!--
+<div id="spaceleft" class="container"> </div>
+-->
+</div>
+<div class="grid_7"  >
+<div class="container" id="middle">
+
+<div id="response">
+
+</div>
+
+<form id="invitations" method="post" action="/invite/" >
+ {% csrf_token %}
+
+<label for="id_invitations">Enter email id's seperated by ;</label>
+<p> example is user1@yahoo.com;user2@gmail.com;user3@hotmail.com </p>
+<textarea cols="50" rows="4" name="emails" onfocus="this.placeholder = ''" placeholder="vedara@gmail.com;shilpa@yahoo.com"></textarea>
+<input type="submit" name="submit" value="send invitations" id="hexabutton" />
+
+
+</form>
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+
+</div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+ </body>
+</html>
+

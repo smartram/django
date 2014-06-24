@@ -1,0 +1,285 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css?ver=1" media="screen">
+  <link href="/site_media/jquery-ui.css" rel="stylesheet" type="text/css" >
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css">
+
+
+ </head>
+ <body>
+ {% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+
+<script type="text/javascript" src="/site_media/jquery-ui.min.js">
+
+	</script>
+
+
+	<script type="text/javascript" src="/site_media/resizeimage.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/user_func.js">
+
+	</script>
+	<script type="text/javascript" src="/site_media/friend_func.js">
+
+	</script>
+
+<script type="text/javascript">
+
+	function getDocHeight() {
+       var D = document;
+       return Math.max(
+          Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+          Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+          Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+     );
+	}
+
+</script>
+
+<script type="text/javascript">
+
+
+(function () {
+
+
+	var listItem = $("#userposts");
+    $(window).scroll(function () {
+    
+		var $box = $("#userposts");
+
+		var actionurl= $("#scriptvalue").attr("value") + $("#username").attr("value");
+           
+     if($(window).scrollTop() + document.body.clientHeight == getDocHeight()){
+	 
+
+         jQuery.ajax({
+		 	   type: 'GET',
+
+			   url: actionurl,
+		 	   dataType: 'json',
+		 	   success: function(data) {
+     		 	   var htmlcode=data["html"];
+     		 	   var status=data['status'];
+     		 	   if(status == 0){
+     		 	   $("#list_members").append(htmlcode).html();
+     		 	   resize_images();
+     		 	   }
+     		 	   else{
+     		 	   $(window).unbind('scroll');
+     		 	   }
+		 	   },
+		 	   async: false,
+		 	   error: function(xhr, textStatus, errorThrown) {
+		 	   alert('An error occurred! ' + errorThrown);
+		 	   },
+		 	   complete:function(){
+
+		 	   }
+
+	   });
+  	 } /* end if */
+      }); // end window.scroll
+
+
+}()); // end function
+
+</script>
+
+
+
+	<script type="text/javascript" src="/site_media/hide_displayposts.js">
+
+	</script>
+
+ <script type="text/javascript">
+        $(document).ready(function () {
+        $("#dialog").hide();
+            $("#sendmessage").click(function () {
+                $("#dialog").dialog({modal: true, height: 400, width: 400 , 
+                		buttons: {                                                        
+                        Cancel: function() { $( this ).dialog( "close" ); }
+                                                
+                      }
+
+				 });
+                return false;
+            });
+
+         $('#MessageForm').ajaxForm({
+
+         beforeSubmit: function() {
+		 $('input[type="submit"]').attr('disabled','disabled');
+
+		 },
+		 success: function(data) {
+
+		 $("#dialog").append(data);
+		 $("#Message").val('');
+		 return false;
+
+		 }
+
+		 });
+
+        });
+    </script>
+
+<script type="text/javascript" src="/site_media/jquery.liveSearch.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/Search.js">
+
+</script>
+
+{% endblock %}
+
+<input type="hidden" id="scriptvalue" value='/getnextfans/' >
+<input type="hidden" id="username" value='{{username}}' >
+
+
+{% include 'header.html' %}
+
+<div class="container_12"  >
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+<!-- <img src="images/profile_120X124.png" border="0" alt="" >-->
+{% if image %}
+<a href="/user/{{username}}"> <img src="{{ image }}" border="0">  </a>
+{% endif %}
+
+<ul>
+
+{% if currentuser %}
+
+<li> <a href="/editprofile" class="blockli">editprofile</a> </li>
+
+{% else %}
+<li> <a id="sendmessage" href="#" class="blockli" >Send Message </a> </li>
+ {% if notfriend %}
+
+   <li> <a id="addfriend" href="/friend_add/{{ username }}" class="blockli">Follow me</a> </li>
+
+ {% endif %}
+
+
+
+{% endif %}
+<li> <a href="/list_friends/{{ username }}" class="blockli">Friends {{ friendscount }} </a> </li>
+<li> <a id="viewfans" href="/view_fans/{{ username }}" class="blockli">Fans {{ fanscount }} </a> </li>
+
+{% if currentuser %}
+<li> <a id="invite" href="/invite" class="blockli"> Invite Friends</a> </li>
+<li> <a id="inbox" href="/inbox" class="blockli" >Message box</a> </li>
+
+
+{% endif %}
+</ul>
+
+<div id="dialog" title="Message window..press Esc key to cancel">
+   <form id="MessageForm" action="/sendmessage/{{username}}" method="post"  enctype="multipart/form-data">
+     {% csrf_token %}
+    <p><small>Write Message here </small></p>
+	<textarea name="Message" id="Message" placeholder="Message" cols="25" rows="4"></textarea>
+    <input type="submit" value="Send Message" class="styled-button-8" >
+  </form>
+
+
+</div>
+
+
+</div> <!-- end left -->
+
+</div>
+<div class="grid_7"  >
+<div id="aboutme">
+<p> About Me:
+{{ aboutme }}
+</p>
+</div>
+<div class="container" id="middle">
+<div id="response">
+
+</div>
+{% if show_fans %}
+<ul id="list_members">
+
+{% for fan in fans %}
+<li name="{{fan.username}}">
+<img class="image_fans profilepic" src="{{ fan.image }}" alt="" >
+
+<a href="/user/{{ fan.username }}" style="vertical-align:top" >  {{ fan.username }} </a>
+
+{% if currentuser %}
+
+{% if fan.is_friend %}
+<button class="Unfriend button blue small" user="{{ fan.username }}" style="vertical-align:top">UnFriend</button>
+{% else %}
+<button class="Addfriend button blue small" user="{{ fan.username }}" style="vertical-align:top">Add Friend</button>
+{% endif %}
+{% endif %}
+<p class="aboutfans" > {{ fan.aboutme }} </p>
+&nbsp;
+</li>
+{% endfor %}
+
+</ul>
+
+{% endif %}
+
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+<!--
+<div class="container" id="related">
+<ul id="umayknow">
+	
+</ul>
+</div>
+-->
+
+</div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+ </body>
+</html>
+

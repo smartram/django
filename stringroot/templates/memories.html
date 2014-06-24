@@ -1,0 +1,218 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="Memories,Personal Diary App">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+   <meta name="robots" content="NOINDEX,NOFOLLOW" />
+
+  <link rel="stylesheet" type="text/css" href="/css/democss.css" media="screen">
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css">
+<link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+<link href="/css/stringroot.alert.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.min.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.form.js">
+
+</script>
+
+
+<script type="text/javascript" src="/site_media/jquery.ui.draggable.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/jquery.alerts.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/memories.js">
+
+</script>
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+ 
+{% block external %}
+
+{% endblock %}
+
+ </head>
+
+ <body>
+ 
+<div class="top_header">
+<div class="container_12">
+
+<div class="grid_12">
+<div class="alpha grid_2">
+<a href="/static/aboutus.html"><img src="/icons/sitename2.png" alt="logo" border="0"></a>
+
+</div>
+<div class="push_1 grid_2">
+</div>
+<div class="push_1 grid_3">
+<form method="get" action="/search" id="search">
+  <input autocomplete="off" name="q" id="q" size="40" placeholder="Search..." type="text">
+</form>
+
+</div>
+
+<div class="push_1 grid_3 omega">
+<div class="push_right">
+<a id="homebutton" href="/"><img src="/icons/btnhomepage.png" alt="home" border="0" height="50" width="40"></a>
+<a href="/logout" title="Sign Out" class="button red">logout</a>
+
+<!--
+<div id="cssmenu">
+<ul>
+   <li class='has-sub '><a href='#'><span> welcome {{ username }}</span></a>
+      <ul>
+         <li class='has-sub '><a href='#'><span>Space </span></a>
+                     </li>
+         <li class='has-sub '><a href='/logout'><span>Sign Out</span></a>
+
+         </li>
+      </ul>
+   </li>
+</ul>
+</div>
+-->
+
+</div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+<div class="container_12"  >
+<div class="container"  >
+<p> Memories you write here are only visible to you. your friends cannot view until you hit share button </p>
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+
+<form id="memform" method="post" action="/memories/" enctype="multipart/form-data">
+  <textarea max_length="1024" cols="20" rows="3" name="hexatext" id="hexatext" onfocus="this.placeholder = ''" placeholder="write your memories here!!"></textarea>
+  <div class="remaining"  >Characters remaining: <span class="count">1024</span></div>
+  <br>
+  {{ form.as_p }}
+  <label for="attachment">Photo</label>
+  <input type="file" name="attachment" id="hexafile" onChange="checkext();" >
+  <br>
+  <input type="submit" class="styled-button-8" value="Post It" id="hexabutton" >
+   {% csrf_token %}
+
+
+</form>
+<!--
+<img id="loading" width="30px" height="30px" src="/site_media/loader.gif" style="position:relative;left:80px;margin-top:-35px"> </img> 
+-->
+<div id="recent">
+<p style="display:inline-block;padding:6px; box-shadow:2px 2px 2px #333;" >Recent Memories</p>
+<ul id="recent_added">
+
+
+</ul>
+</div>
+</div> <!-- end left -->
+
+</div>
+<div class="grid_7"  >
+<div class="container" id="middle">
+<div id="response">
+
+</div>
+
+
+<br>
+
+<div id="userposts" >
+ This Month Memories
+
+<ul id="list_posts">
+
+{% include "monthmemories.html" %}
+
+</ul>
+</div>
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+
+<div class="container" id="related">
+<h3>Months</h3>
+<ul id="months list">
+	<li>
+	<a class="memlinks" href="/getmemories/?month=1">Jan </a>
+	</li>
+
+	<li>
+	<a class="memlinks" href="/getmemories/?month=2">Feb</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=3">Mar</a>
+	</li>
+	
+	<li>
+	<a class="memlinks" href="/getmemories/?month=4">Apr</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=5">May</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=6">June</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=7">July</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=8">Aug</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=9">Sep</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=10">Oct</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=11">Nov</a>
+	</li>
+	<li>
+	<a class="memlinks" href="/getmemories/?month=12">Dec</a>
+	</li>
+	
+	
+</ul>
+</div>
+
+
+</div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+</body>
+</html>
+

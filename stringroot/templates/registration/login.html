@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="stringroot">
+  <meta name="Description" content="stringroot a new social networking site for sharing photos,pdf,ppt,music">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <meta name="google-site-verification" content="jfDuQLmOBSvR1jZPFV4yr7VDWVII1mPLDZnQkuU3MWQ" />
+  
+  <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen">
+
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  
+  <link rel="stylesheet" type="text/css" href="/css/style.css" media="screen">
+  
+ </head>
+ 
+
+<body>
+<div class="container_12">
+<div class="div_home ">
+<h1> <p style='font-size:16px'>Recommended browsers: Google chrome 26 and Firefox 20 </p></h1>
+
+<div class="grid_12"  >
+<div class="alpha grid_4"  >
+<div id="homeimage"></div>
+</div>
+
+<div class="push_2 grid_6 omega"  >
+<div class="site_name"></div>
+
+<div class="">
+
+<h1>User Login</h1>
+{% if form.has_errors %}
+<p>Your email and password didn't match.
+Please try again.</p>
+{% endif %}
+<form method="post" action="/login/" class="login_form">
+<p><label for="id_username">Email:</label>
+{{ form.email }}</p>
+<p><label for="id_password">Password:</label>
+{{ form.password }}</p>
+ {% csrf_token %}
+ <input type="hidden" name="next" value="/" />
+<input type="submit" value="Sign In" class="button blue"  />
+ <a href="/register" class="button orange">Register If New</a> 
+ <br/>
+  <br/>
+  <a  href="/reset" >Forgot Password</a> 
+
+</form>
+
+
+</div>
+<div class="footer_index_container">
+<div class="footer_index"><a href="/static/aboutus.html" id="aboutus">About Us</a></div>
+<div class="footer_index"><a href="/static/aboutme.html" id="creation">Venkata R Edara's Creation</a></div>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div class="grid_12"  >
+<div class="push_9 grid_3"  >
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+
+</body>
+</html>
+

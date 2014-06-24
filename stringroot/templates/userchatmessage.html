@@ -1,0 +1,29 @@
+{% autoescape off %}
+
+{% for msg in chatmessages %}
+
+  {% if msg.fromme %}
+  <li>
+
+  <a href="/user/{{ username }}" class="me"> me: </a>
+  <p class="chatmessage">  {{ msg.text }}  </p>
+
+  </li>
+
+  {% else %}
+
+  <li >
+    <a  href="/user/{{ fromusername }}" class="you"> {{ fromusername }} </a>    
+
+    <p class="chatmessage">   {{ msg.text }}  </p> 
+
+  </li>
+
+
+  {% endif %}
+
+  {% endfor %}
+
+{% endautoescape %}
+
+

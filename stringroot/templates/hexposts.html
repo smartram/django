@@ -1,0 +1,14 @@
+
+{ % for post in posts %}
+
+<li id="{{ post.id }} ">
+<img src="{{ image }}" width="60%" height="40%"> </img > <a href="/user/{{username}}"> {{username}} </a>
+<p> {{ post.text }} </p>
+{% if attachment %}
+<a href="/postid/{{random}}">view attachment </a>
+
+{% endif %}
+
+</li>
+
+{% endfor %}

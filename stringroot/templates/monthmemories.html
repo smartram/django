@@ -1,0 +1,49 @@
+	{% autoescape off %}
+{% if memories %}
+    {% for post in memories %}
+
+<li id="{{ post.id }}" class="posts" >
+
+<p class="para left" >
+
+<br>
+{{ post.memtext }}
+
+{% if post.ftype %}
+{% if post.posttype == 7 or post.posttype == 8 or post.posttype == 9  or post.posttype == 10 %}
+<a href="/memid/{{post.code}}"> <img src="{{post.ftype}}" width="{{post.width}}px" height="{{post.height}}px" alt="image"> </a>
+
+{% else %}
+<a href="/memid/{{post.code}}"> <img width="45" height="45" src="{{post.ftype}}"> </a>
+
+{% endif %}
+
+{% endif %}
+
+<span class="memdate"> {{ post.month }} - {{ post.day }} - {{ post.year }} </span> 
+</p>
+<p style="font-size:10px">{{post.timeformat}}</p>&nbsp;
+
+{% if post.is_shared %}
+
+  <a class="sharemem" href="#" id="{{post.postid}}"> unshare </a>
+
+{%else %}
+   <a class="sharedpost" href="#" id="{{post.postid}}" > share </a>
+ 
+{% endif %}
+
+<a class="delpost" href="#" id="{{post.postid}}" > delete</a>
+
+ &nbsp;
+</li>
+
+{% endfor %}
+{% else %}
+<li><p style="font-size:10px;color:grey"> No Memories left <p> </li>
+{% endif %}
+{% if show_button %}
+<a class="more_memories" id="{{ month }} ">Show More</a>
+{% endif %}
+
+{% endautoescape %}

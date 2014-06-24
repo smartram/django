@@ -1,0 +1,19 @@
+{% for fan in fans %}
+<li name="{{fan.username}}">
+<img class="image_fans profilepic" src="{{ fan.image }}" alt="">
+
+<a href="/user/{{ fan.username }}" style="vertical-align:top" >  {{ fan.username }} </a>
+
+{% if currentuser %}
+
+{% if fan.is_friend %}
+<button class="Unfriend button blue small" user="{{ fan.username }}" style="vertical-align:top">UnFriend</button>
+{% else %}
+<button class="Addfriend button blue small" user="{{ fan.username }}" style="vertical-align:top">Add Friend</button>
+{% endif %}
+{% endif %}
+<p class="aboutfans" > {{ fan.aboutme }} </p>
+&nbsp;
+</li>
+{% endfor %}
+

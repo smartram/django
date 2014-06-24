@@ -1,0 +1,234 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=1040px, minimum-scale=0.5, maximum-scale=1.0" >
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_photo.css?ver=1" media="screen">
+  <link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+ 
+ <link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" >
+ <link rel="stylesheet" href="/css/jquery.fancybox.css?v=2.1.4" type="text/css" media="screen" >
+ <link rel="stylesheet" href="/css/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" media="screen" >
+ <link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" >
+
+<style>
+
+
+.mainimage {
+max-width:75%;
+max-height:75%;
+overflow:hidden;
+}
+
+
+li.other { display:none; list-style:none; }
+
+li{
+list-style:none;
+}
+
+.description {
+    display: block;
+	width:30%;    
+    float: left;
+    border:1px solid ;
+    border-radius:20px;
+    list-style:none;
+
+}
+
+.hits{
+    margin-left:70px; 
+
+}
+
+</style>
+
+ </head>
+ 
+ <body>
+{% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+
+	<script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+
+	<script type="text/javascript" src="/site_media/browser.js">
+
+	</script>
+   
+   
+    <script type="text/javascript" src="/site_media/comments.js">
+
+     </script>
+
+<script type="text/javascript" src="/site_media/jquery.fancybox.pack.js?v=2.1.4"></script>
+
+<!-- Optionally add helpers - button, thumbnail and/or media -->
+<script type="text/javascript" src="/site_media/jquery.fancybox-buttons.js?v=1.0.5"></script>
+<script type="text/javascript" src="/site_media/jquery.fancybox-media.js?v=1.0.5"></script>
+
+<script type="text/javascript" src="/site_media/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+
+<script type="text/javascript" src="/site_media/jquery.liveSearch.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/Search.js">
+
+</script>
+
+
+ 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".fancybox").fancybox();
+		
+		resize_photo=function(){ 
+		$('img.mainimage').load(function() {
+        var maxWidth = 640; // Max width for the image
+        var maxHeight = 480;    // Max height for the image
+        var ratio = 0;  // Used for aspect ratio
+        var width = $(this).width();    // Current image width
+        var height = $(this).height();  // Current image height
+
+        // Check if the current width is larger than the max
+        if(width > maxWidth){
+            ratio = maxWidth / width;   // get ratio for scaling image
+            $(this).css("width", maxWidth); // Set new width
+            $(this).css("height", height * ratio);  // Scale height based on ratio
+            height = height * ratio;    // Reset height to match scaled image
+            width = width * ratio;    // Reset width to match scaled image
+        }
+
+        // Check if current height is larger than max
+        if(height > maxHeight){
+            ratio = maxHeight / height; // get ratio for scaling image
+            $(this).css("height", maxHeight);   // Set new height
+            $(this).css("width", width * ratio);    // Scale width based on ratio
+            width = width * ratio;    // Reset width to match scaled image
+        }
+    });
+    };
+    
+ resize_photo();
+
+	});
+</script>
+  
+{% endblock %}
+<input type="hidden" id="postcode" value="{{ postcode }} " />
+
+<div class="clear"></div>
+{% include 'header.html' %}
+
+<div class="container_12"  >
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+</div>
+
+</div>
+<div class="grid_7"  >
+ 
+<div class="" id="attachment"> 
+<li class="main">
+
+<a class="fancybox" rel="gallery1" href="{{ filelocation }}" title="">
+	<img  class="mainimage" src="{{ filelocation }}" alt="" >
+</a>
+</li>
+
+{% for photo in photos %}
+<li class="other">
+<a class="fancybox" rel="gallery1" href="{{ photo }}" > </a>
+
+</li>
+{% endfor %}
+&nbsp;
+<ul>
+<li class="description">
+<p style="text-align:center"> uploaded by <a href="/user/{{uploaded_by}}">{{uploaded_by}} </a> </p>
+</li>
+
+<li class="description hits">
+<p style="text-align:center"> Hits: {{ hits }} </p>
+</li>
+
+</ul>
+
+</div>
+
+<div class="" id="comments">
+
+{% if user.is_authenticated %}
+<form method="post" action="/docomment/" id="commentform">
+<textarea max_length="80" cols="40" rows="3" name="commenttext" id="commenttext"  placeholder="Enter Your Comment Here..... " required></textarea>
+<div class="remaining"   > <p style="font-size:12px"> Characters remaining: <span class="count">80</span> </p></div>
+
+<input type="submit" value="Comment" class="button blue medium" id="commentbutton"/>
+ {% csrf_token %}
+
+</form>
+{% endif %}
+<br>
+
+<div>
+<ul id="list_comments">
+	
+  {% for comment in comments %}
+    
+     <li id="{{ comment.commentid }}" >
+     <a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  > </img> </a>
+     <a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
+     <p class="commenttext"> {{ comment.text }} </p> <button class="reportspam" id="{{ comment.commentid }}"> Report Comment as Spam </button>
+
+     </li>
+      &nbsp;
+
+  {% endfor %}
+</ul>
+</div>
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+</div>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+ </body>
+</html>

@@ -1,0 +1,12 @@
+{% if rposts %}
+
+{% for rpost in rposts %}
+<li>
+<img  src="{{rpost.ftype}}" width="40px" height="50px"></img>
+ <p style="display:block;margin-left:45px;margin-top:-45px;font-size:14px;overflow:hidden"> <a href="/postid/{{rpost.code}}" > {{ rpost.filename }}  </a> </p>
+</li>
+
+{% endfor %}
+
+</ul>
+{% endif %}

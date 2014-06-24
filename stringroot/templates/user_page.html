@@ -1,0 +1,417 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+ <head>
+  <title> String Root  </title>
+  
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="Venkata R Edara">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <meta name="google-site-verification" content="jfDuQLmOBSvR1jZPFV4yr7VDWVII1mPLDZnQkuU3MWQ" />
+
+  <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
+  
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" media="screen">
+  
+  <link href="/site_media/jquery-ui.css" rel="stylesheet" type="text/css" >
+ <link href="/site_media/bubble.css" rel="stylesheet" type="text/css" >
+<link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
+<link href="/css/stringroot.alert.css" rel="stylesheet" type="text/css">
+<link href="/css/style_logout.css" rel="stylesheet" type="text/css">
+
+<style>
+#aboutme li { list-style:none; }
+</style>
+ </head>
+ <body>
+ {% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery-ui.min.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/resizeimage.js?ver=1">
+
+	</script>
+
+
+	<script type="text/javascript" src="/site_media/user_func.js">
+
+	</script>
+	<script type="text/javascript" src="/site_media/friend_func.js">
+
+	</script>
+	
+	<script type="text/javascript" src="/site_media/getffcount.js">
+
+	</script>
+
+
+	
+	<script type="text/javascript" src="/site_media/jquery.alerts.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/hide_displayposts.js">
+
+	</script>
+
+
+<script type="text/javascript">
+
+function getDocHeight() {
+    var D = document;
+    return Math.max(
+        Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+        Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+        Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+    );
+}
+
+
+</script>
+
+<script type="text/javascript">
+
+var bind_delete=function (){
+$("ul a.delpost").click(function() {
+
+var jthis=$(this);
+var value="/deletepost/" + $(jthis).attr("id");
+
+jQuery.extend({
+    deleteValues: function(url) {
+        var result = null;
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+                result = data['html'];
+            }
+        });
+       return result;
+    }
+});
+
+jConfirm('Are you sure you want to delete this post?', 'Confirmation Dialog', function(r) {
+										
+					if(r==true)
+					{
+					    $(jthis).parent().remove();
+						var htmlStore = $.deleteValues(value);
+
+					}
+						
+						
+						
+	}); // end jConfirm 
+   
+    return false; // prevent default
+
+}); // end click
+
+
+
+}
+</script>
+
+<script type="text/javascript">
+
+(function () {
+ $(window).scroll(function() {   
+   if($(window).scrollTop() + document.body.clientHeight == getDocHeight() ){
+    jQuery.ajax({
+		 	   type: 'GET',
+			   url: '/getnextposts?username=' + $("#userpageval").attr('value'),
+		 	   dataType: 'json',
+		 	   async:false,
+		 	   success: function(data) {
+     		 	   var htmlcode= data["html"];
+     		 	   var status = data["status"];
+     		 	  
+     		 	   if(status == 0){
+
+     		 	   $("#list_posts").append(htmlcode).html();
+     		 	   bind_delete();
+     		 	   resize_images();
+     		 	   }
+     		 	   else{
+     		 	   		 bind_delete();
+     		 	   		 $(window).unbind('scroll');
+     		 	   }
+		 	   },
+		 	   error: function(xhr, textStatus, errorThrown) {
+		 	   alert('An error occurred! ' + errorThrown);
+		 	   },
+		 	   complete:function(){
+
+		 	   }
+
+	   		});
+
+	   }
+});
+
+}()); // end function
+
+</script>
+
+
+
+ <script type="text/javascript">
+        $(document).ready(function () {
+        $("#dialog").hide();
+            $("#sendmessage").click(function () {
+                $("#dialog").dialog({modal: true, height: 400, width: 400 , 
+                		buttons: {                                                        
+                        Cancel: function() { $( this ).dialog( "close" ); }
+                                                
+                      }
+
+				 });
+                return false;
+            });
+
+         $('#MessageForm').ajaxForm({
+
+         beforeSubmit: function() {
+		 $('input[type="submit"]').attr('disabled','disabled');
+
+		 },
+		 success: function(data) {
+		$("#resp_dialog").empty();
+		 $("#resp_dialog").append(data);
+		 $("#Message").val('');
+		 return false;
+
+		 }
+
+		 });
+
+		$('#Message').keyup(function() {
+          if($(this).val().length > 0) {
+           $('input[type="submit"]').removeAttr('disabled');
+           }
+          else{
+        
+       		 $('input[type="submit"]').attr('disabled','disabled');
+     	  	}
+        
+     	}); //end keyup
+  
+        });
+    </script>
+
+<script type="text/javascript" src="/site_media/jquery.liveSearch.js">
+
+</script>
+
+<script type="text/javascript" src="/site_media/Search.js">
+
+</script>
+<script type="text/javascript" src="/site_media/browser.js">
+
+	</script>
+{% endblock %}
+
+<input type="hidden" id="scriptvalue" value='/getnextposts' >
+<input type="hidden" id="userpageval" value='{{ username }}' >
+
+
+<!-- </div> -->
+{% include 'header.html' %}
+
+<div class="container_12"  >
+
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+
+<!-- <img src="images/profile_120X124.png" border="0" alt="" >-->
+{% if image %}
+<a href="/user/{{username}}"> <img src="{{ image }}" border="0" alt="" >  </a>
+{% endif %}
+
+<ul>
+
+{% if currentuser %}
+
+<li> <a href="/editprofile" class="blockli">editprofile</a> </li>
+
+{% else %}
+<li> <a id="sendmessage" href="#" class="blockli" >Send Message </a> </li>
+ {% if notfriend %}
+
+   <li> <a id="addfriend" href="/friend_add/{{ username }}" class="blockli">Follow me</a> </li>
+
+ {% endif %}
+
+
+
+{% endif %} <!-- end currentuser -->
+
+<li> <a id="friendscount" href="/list_friends/{{ username }}" class="blockli">Friends  </a> </li>
+<li> <a id="viewfans" href="/view_fans/{{ username }}" class="blockli">Fans </a> </li>
+
+{% if currentuser %}
+<li> <a id="invite" href="/invite" class="blockli"> Invite Friends</a> </li>
+<li> <a id="inbox" href="/inbox" class="blockli" >Message box</a> </li>
+
+
+{% endif %} <!-- end currentuser -->
+</ul>
+
+<div id="dialog" title="Message window..press Esc key to cancel">
+   <form id="MessageForm" action="/sendmessage/{{username}}" method="post"  enctype="multipart/form-data">
+     {% csrf_token %}
+    <p><small>Write Message here </small></p>
+	<textarea name="Message" id="Message" placeholder="Message" cols="25" rows="4"></textarea>
+    <input type="submit" value="Send Message" class="styled-button-8" >
+  </form>
+
+   <div id="resp_dialog">
+ 
+    </div>
+ 
+</div>
+
+
+</div> <!-- end left -->
+
+<!--
+{% if currentuser %}
+
+<div id="spaceleft" class="container"><p> {{ spaceleft }} MB available</p></div>
+{% endif %}
+-->
+
+</div>
+<div class="grid_7"  >
+<div id="aboutme">
+<li>
+<p> <b> About {% if about %} me: {% else %} {{ username }}: {% endif %} </b>
+{{ aboutme }}
+</p>
+</li>
+<li>
+<p> {% if school %} <b> School/College: </b> {{ school }} {% endif %} </p> 
+</li>
+
+</div>
+<div class="container" id="middle">
+<div id="response">
+
+</div>
+
+{% if posts and showprofile %}
+
+<ul id="list_posts">
+
+{% autoescape off %}
+{% for post in posts %}
+
+<li id="{{ post.postid }}" class="posts" >
+<a href="/user/{{ post.username }}"> <img class="profilepic" src="{{ post.image }}"  alt="">  </a>
+
+<p class="para left" >
+<a style="vertical-align:top" href="/user/{{post.username}}"> {{ post.username }} </a> <br>
+{{ post.text }}
+
+{% if post.ftype %}
+{% if post.posttype == 7 or post.posttype == 8 or post.posttype == 9 or post.posttype == 10 %}
+<a href="/postid/{{post.code}}"> <img src="{{post.ftype}}" width="{{post.width}}" height="{{post.height}}" alt="image"></a>
+
+{% else %}
+<a href="/postid/{{post.code}}"> <img width="45" height="45" src="{{post.ftype}}"> </a>
+
+{% endif %}
+{% endif %}
+</p>
+<p style="font-size:10px">{{post.timeformat}}</p>
+&nbsp;
+{% if post.is_shared %}
+
+    <p>shared by {{post.sharingusers}} </p>
+
+ {% endif %}
+
+{% if currentuser %}
+<a class="delpost" href="#" id="{{post.postid}}" > delete</a>
+{% endif %}
+
+ &nbsp;
+</li>
+{% endfor %}
+
+{% endautoescape %}
+</ul>
+
+{% else %}
+
+ {% if currentuser %}
+ <p style="font-size:14px;color:blue"> <b> you havent posted anything. please click <a href="/">here </a> </b></p>
+ <br>
+ 
+ <li id="{{ post.postid }}" class="posts" >
+ <a href="/user/rao_soft27"> <img class="profilepic" src="/site_media/thumbs/stringroot.jpg"  alt="">  </a>
+
+  <p class="para left" >
+  <a style="vertical-align:top" href="/user/rao_soft27"> rao_soft27 </a> <br>
+  How to use stringroot.com is here
+   <embed width="400" height="300" src="http://www.youtube.com/v/ercV_vfJDBw" type="application/x-shockwave-flash">            
+  </embed>
+ </p>
+</li>
+
+ {% else %}
+ <p style="font-size:13px;color:blue"> <b> {{username}} havent posted anything or chosen not to share with others</p>
+  {% endif %} <!-- end currentuser -->
+
+{% endif %} <!-- end if posts -->
+
+</div>
+
+</div>
+<div class="grid_3 omega"  >
+<!--
+<div class="container" id="related">
+</div>
+-->
+
+</div>
+
+</div>
+
+<div class="clear"></div>
+</div>
+</div>
+
+
+ </body>
+</html>
+

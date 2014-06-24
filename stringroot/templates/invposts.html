@@ -1,0 +1,49 @@
+{% autoescape off %}
+{% if have_posts %}
+
+{% for post in posts %}
+
+<li id="{{ post.postid }}" class="posts" >
+<a href="/user/{{ post.username }}"> <img src="{{ post.image }}" alt="" class="profilepic"> </img> </a>
+
+<p class="para left" >
+<a style="vertical-align:top" href="/user/{{post.username}}"> {{ post.username }} </a> <br/>
+{{ post.text }}
+
+
+{% if post.ftype %}
+{% if post.posttype == 7 or post.posttype == 8 or post.posttype == 9 %}
+<a href="/postid/{{post.code}}"> <img src="{{post.ftype}}" width="25%" height="25%" alt="image"> </a>
+
+{% else %}
+<a href="/postid/{{post.code}}"> <img width="45" height="45" src="{{post.ftype}}"> </a>
+
+{% endif %}
+
+{% endif %}
+
+</p>
+<p style="font-size:10px">{{post.timeformat}}</p>
+&nbsp;
+
+{% if post.is_shared %}
+
+    <p>shared by {{ post.sharingusers }} </p>
+
+ {% endif %}
+
+{% if post.iamowner %}
+<a class="delpost" href="#" id={{post.postid}} > delete</a>
+
+{% endif %}
+
+ &nbsp;
+</li>
+<br>
+{% endfor %}
+
+{% else %}
+<li id="noposts">  </li>
+
+{% endif %}
+{% endautoescape %}

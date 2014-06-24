@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{%block content %}
+
+{% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+<script src="/site_media/jquery-1.6.4.js">
+</script>
+
+<script src="/site_media/jquery.min.js">
+</script>
+
+
+<!-- 2. flowplayer -->
+<script src="/site_media/flowplayer-3.2.10.min.js">
+</script>
+
+
+<script>
+$(function() {
+
+   // install flowplayer to an element with CSS class "player"
+   flowplayer("player", "/site_media/flowplayer-3.2.11.swf", {
+         clip:  {
+             autoPlay: false,
+             autoBuffering: true
+         }
+  });
+
+});
+</script>
+
+
+
+
+<!-- 3. skin -->
+<link rel="stylesheet" type="text/css"
+   href="http://releases.flowplayer.org/5.2.0/skin/minimalist.css" />
+
+{% endblock %}
+
+
+<body>
+
+<div id="left" style="float:left width:13%; height:25%; margin-left:10%">
+
+
+</div>
+
+<div id="middle" style="position:relative; float:left; width:67%; margin-left:25%; padding-bottom: 1em;">
+
+<p> uploaded by <a href="/user/{{uploaded_by}}">{{uploaded_by}} </a> </p>
+
+<a href="{{filelocation}}"
+    style="display:block;width:425px;height:300px;"
+    id="player">
+</a>
+
+</div>
+
+<div id="right" style="position:relative; float:right; width:20%; margin-top:0% ">
+Ad's come here
+</div>
+
+  {% endblock %}

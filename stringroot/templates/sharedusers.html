@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+{% for username in list_users %}
+
+<a href="/user/{{username}}" style="display:inline">{{username}}</a> &nbsp;
+
+{% endfor %}
+
+{% endautoescape %}

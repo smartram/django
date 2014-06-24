@@ -1,0 +1,143 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> String Root  </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css?ver=1" media="screen">
+  <!--
+  <link rel="stylesheet" href="/css/chatbubble.css" type="text/css" >
+  
+<link rel="stylesheet" href="/css/rightbubble.css" type="text/css" >
+-->
+<style>
+.me {color:blue;}      /* unvisited link */
+.you {color: red ;}
+.chatmessage { 
+display:inline-block;
+border:1px none;
+font-size:14px;
+vertical-align:top;
+}
+</style>
+
+ </head>
+ <body>
+ {% block external %}
+
+<noscript>
+
+please enable java script.
+
+</noscript>
+
+
+	<script type="text/javascript" src="/site_media/jquery-1.6.4.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/jquery.min.js">
+
+	</script>
+
+   <script type="text/javascript" src="/site_media/jquery.form.js">
+
+	</script>
+	<script type="text/javascript" src="/site_media/chat.js">
+
+	</script>
+
+	<script type="text/javascript" src="/site_media/user_func.js">
+
+	</script>
+
+
+	<script type="text/javascript" src="/site_media/latest_chatmsgs.js">
+	
+	</script>
+	<!-- To DO enable button only char count gt 1. include js for char count  -->
+	<!-- TO DO have button to load older msgs and prepend to div -->
+
+{% endblock %}
+
+
+<input type="hidden" id="username" value="{{fromusername}}" >
+
+{% include 'header.html' %}
+
+<div class="container_12"  >
+<div class="container"  >
+<div class="grid_12"  >
+<div class="alpha grid_2">
+<div id="left">
+{% include 'usersections.html' %}
+</div>
+
+</div>
+<div class="grid_10 omega"  >
+<div class="" id="chatwindow">
+<br>
+<br>
+{% if chatmessages %}
+<ul id="list_chat">
+ {% for msg in chatmessages %}
+
+  {% if msg.fromme %}
+  <li>
+
+  <a href="/user/{{ username }}" class="me"> me: </a>
+  <p class="chatmessage">  {{ msg.text }}  </p>
+
+  </li>
+
+  {% else %}
+
+  <li >
+
+    <a href="/user/{{ fromusername }}" class="you"> {{ fromusername }}: </a>    
+  
+    <p class="chatmessage">   {{ msg.text }}  </p> 
+
+  </li>
+
+
+  {% endif %}
+
+  {% endfor %}
+
+  {% else %}
+    <p id="empty" style="color:blue; text-align:center"> <b> Chatter box empty Click <a href="/">Here </a> . </b> </p>
+
+</ul>
+  {% endif %}
+
+</div>
+
+<form id="chatform" action="/sendchat/" method="post" class="form_chatwindow">
+   <input type="hidden" name="username" id="username" value="{{fromusername}}" >
+    <input type="text" max_length="80" cols="30" rows="2" name="chattext" id="chattext" onfocus="this.placeholder =''" placeholder="Enter here!!" style="float:left">
+    <input type="submit" id="hexabutton" class="button blue" value="send message" >
+    <div class="remaining"  >Characters remaining: <span class="count">80</span></div>
+
+   {% csrf_token %}
+
+</form>
+
+</div>
+
+
+</div>
+<div class="clear"></div>
+</div>
+</div>
+
+
+
+ </body>
+</html>

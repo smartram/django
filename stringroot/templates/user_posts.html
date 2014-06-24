@@ -1,0 +1,27 @@
+{% autoescape off %}
+<li id="{{ post.postid }}" class="posts" >
+<a href="/user/{{ post.username }}"> <img class="profilepic" src="{{ post.image }}" alt=""> </img> </a>
+
+<p class="para left" >
+<a style="vertical-align:top" href="/user/{{post.username}}"> {{ post.username }} </a> <br/>
+{{ post.text }}
+
+{% if post.ftype %}
+
+{% if post.posttype == 7 or post.posttype == 8 or post.posttype == 9 or post.posttype == 10 %}
+<a href="/postid/{{post.code}}"> <img src="{{post.ftype}}" width="{{post.width}}" height="{{post.height}}" alt="image"></a>
+
+{% else %}
+<a href="/postid/{{post.code}}"> <img width="45" height="45" src="{{post.ftype}}"> </a>
+{% endif %}
+
+{% endif %}
+</p>
+<p style="font-size:10px">{{post.timeformat}}</p>&nbsp;
+
+<a class="delpost" href="#" id={{post.postid}} > delete</a>
+&nbsp;
+</li>
+<br/>
+
+{% endautoescape %}
