@@ -513,7 +513,7 @@ def edit_profile(request):
         if form.is_valid():
             is_image=False
             country=form.get_country()
-            city=form.get_city()
+            city=str(form.get_city())[0:30]
             aboutme=form.get_aboutme()
             visibility=int(form.get_visibility())
             school=form.get_school()
@@ -561,32 +561,20 @@ def edit_profile(request):
             if is_image:
                 new_pic=os.path.join(MEDIA_ROOT + member.image.name)
                 save_thumbnail(new_pic)
-                
                 user_obj.image="/site_media/" + member.image.name
             
             request.session['userprofile']=user_obj  
             #return redirect('/user/%s'%(request.user.username))
-            resp="<p> changes are saved. <a href='/user/%s'>Click Here </a> </p>"%(request.user.username)
-            return HttpResponse(resp)
-        
-        else: # if form is not valid
-            #member=person.objects.get(pid=request.user)
-            if 'school' in request.POST:
-                member.school=request.POST['school']
-                member.save()
-                
-            if 'profilepic' in request.FILES:
-                member.image=request.FILES['profilepic']
-                is_image=True
-                if is_image:
-                    member.save()
-                    new_pic=os.path.join(MEDIA_ROOT + member.image.name)
-                    save_thumbnail(new_pic)
-                    user_obj.image="/site_media/" + member.image.name
-             
-            request.session['userprofile']=user_obj  
-            resp="<p> changes are saved. <a href='/user/%s'>Click Here </a> </p>"%(request.user.username)
-            return HttpResponse(resp)
+            form=EditProfile({'country':country,'city':city,'school':school,'aboutme':aboutme,
+                          'firstname':firstname,'lastname':lastname,'visibility':visibility})
+            form2=ChangePassword()
+            variables=RequestContext(request,{'form':form,'form2':form2,'errors':False,'username':user_obj.username,
+                                              'image':user_obj.image,
+                                          'currentuser':True,
+                                          'save':True})
+    
+            return render_to_response('registration/editprofile.html',variables)
+    
     else: # if method id GET
         for c in countries:
             if member.country==c[1]:
