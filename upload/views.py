@@ -263,7 +263,7 @@ def registeruser(request):
                 password=form.clean_password2()
                 
                 email=form.clean_email()
-                city=form.clean_city().lower()
+                city=str(form.clean_city().lower())[0:30] #take only 29 chars max
                 country_name=getcountry(form.clean_country())
                 username=str(email).split('@')
                 username=str(username[0]).lower()
