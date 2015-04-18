@@ -13,7 +13,7 @@
 
   <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
   <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="/css/style_photo.css?ver=1" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_photo.css" media="screen">
   <link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
  
  <link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" >
@@ -206,14 +206,7 @@ please enable java script.
 <ul id="list_comments">
 	
   {% for comment in comments %}
-    
-     <li id="{{ comment.commentid }}" >
-     <a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  > </img> </a>
-     <a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
-     <p class="commenttext"> {{ comment.text }} </p> <button class="reportspam" id="{{ comment.commentid }}"> Report Comment as Spam </button>
-
-     </li>
-      &nbsp;
+    {% include 'publishcomment.html' %}
 
   {% endfor %}
 </ul>
