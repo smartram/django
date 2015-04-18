@@ -1,10 +1,12 @@
 {% autoescape off %}
 
-<li id={{ comment.commentid }} class="comments" >
-<a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  >  </a>
-<a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
-<p class="commenttext" > {{ comment.text }} </p> <button class="reportspam" id={{ comment.commentid }}> Report Spam </button>
 
-</li>
-&nbsp;
+     <li id="{{ comment.commentid }}" >
+     <a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  > </img> </a>
+     <a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
+     <p class="commenttext"> {{ comment.text }} </p> <br/>
+     <a class="spam" id="{{ comment.commentid }}" > Report Spam </a>
+     </li>
+      &nbsp;
+
 {% endautoescape %}
