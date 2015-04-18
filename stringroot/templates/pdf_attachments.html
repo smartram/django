@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" >
   <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
   <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="/css/style_others.css?ver=1" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css" media="screen">
   <link rel="stylesheet" type="text/css"
    href="http://releases.flowplayer.org/5.2.0/skin/minimalist.css" >
   <link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
@@ -140,14 +140,8 @@ please enable java script.
 	
   {% for comment in comments %}
     
-     <li id="{{ comment.commentid }}" >
-     <a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  > </img> </a>
-     <a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
-     <p class="commenttext"> {{ comment.text }} </p> <button class="reportspam" id="{{ comment.commentid }}"> Report Spam </button>
-
-     </li>
-      &nbsp;
-
+   {% include 'publishcomment.html' %}
+   
   {% endfor %}
 </ul>
 </div>
