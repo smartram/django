@@ -59,7 +59,8 @@ please enable java script.
 	<script type="text/javascript" src="/site_media/browser.js">
 
 	</script>
-	
+    
+   
     <script type="text/javascript" src="/site_media/comments.js">
 
      </script>
@@ -174,15 +175,9 @@ Your browser does not support the audio element. please install chrome browser
 <ul id="list_comments">
 	
   {% for comment in comments %}
-    
-     <li id="{{ comment.commentid }}" >
-     <a href="/user/{{ comment.username }}"> <img src="{{ comment.image }}" width="45" height="60"  > </img> </a>
-     <a style="vertical-align:top" href="/user/{{comment.username}}"> {{ comment.username }} </a>
-     <p class="commenttext"> {{ comment.text }} </p> <button class="reportspam" id="{{ comment.commentid }}"> Report Comment as Spam </button>
-
-     </li>
-      &nbsp;
-
+   
+    {% include 'publishcomment.html' %}
+  
   {% endfor %}
 </ul>
 </div>
