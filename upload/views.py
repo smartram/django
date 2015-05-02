@@ -788,20 +788,21 @@ def postid(request,postidnum):
     from upload.tasks import save_hits_todb
     from os import listdir
     from os.path import isfile, join
-
-    postcode=postidnum
-    userobj=request.user
-    ispdf=False
-    isppt=False
+    from upload.comments import getcomments
+    postcode = postidnum
+    userobj = request.user
+    ispdf = False
+    isppt = False
     #isphoto=False
-    isflash=False
-    ismp3=False
-    ismp4=False
+    isflash = False
+    ismp3 = False
+    ismp4 = False
+    isowner = False
     try:
-        post=Posts.objects.select_related('ownerid__homedir','ownerid__username').filter(mark_delete=False).filter(code=postcode)[0]
-        
+        post=Posts.objects.select_related('ownerid__homedir','ownerid__username').filter(mark_delete=False).filter(code=postcode)
+   
         if post:
-            from upload.comments import getcomments
+            post=post[0]
             list_comments=getcomments(post)
             filetype=post.filetype
             filename=post.filename
@@ -810,7 +811,8 @@ def postid(request,postidnum):
             request.session['postid']=post.postid
             cache.set(postidnum,(filename,filetype,username))
             filelocation="%s%s%s%s" %(SITE_MEDIA, homedir,sep(),filename) #TO DO add ip address for users home dir multiple media servers
-          
+            if request.user.is_authenticated() and request.user.username == username:
+                isowner = True
             #get the number of hits from cache or db.
             hitkey=postidnum +".hit"
             num_of_hits=cache.get(hitkey)
@@ -829,22 +831,24 @@ def postid(request,postidnum):
             
             if filetype==allowed_filetypes['pdf']:
                 ispdf=True
-                variables=RequestContext(request,{'user':userobj,'filelocation':filelocation,'uploaded_by':username,'comments':list_comments,'postcode':postcode,'hits':num_of_hits})    
+                variables = RequestContext(request,{'user':userobj,'filelocation':filelocation,'isowner':isowner,
+                                                    'uploaded_by':username,'comments':list_comments,'postcode':postcode,
+                                                    'hits':num_of_hits})    
                 return render_to_response('pdf_attachments.html',variables)
               
                 
             elif filetype==allowed_filetypes['ppt']:
-                isppt=True
+                isppt = True
                     
             elif filetype==allowed_filetypes['flv']:
-                isflash=True
+                isflash = True
             
             elif filetype==allowed_filetypes['mp4']:
-                ismp4=True
+                ismp4 = True
                 
             elif filetype==allowed_filetypes['mp3']:
-                ismp3=True 
-                variables=RequestContext(request,{'user':userobj,'filelocation':filelocation,
+                ismp3 = True 
+                variables=RequestContext(request,{'user':userobj,'filelocation':filelocation,'isowner':isowner,
                                                   'uploaded_by':username,'comments':list_comments,'hits':num_of_hits,'postcode':postcode})    
                 return render_to_response('music_attachment.html',variables)
               
@@ -855,8 +859,10 @@ def postid(request,postidnum):
                  
                 photos=Posts.objects.filter(ownerid__username=username).filter(mark_delete=False).filter(filetype__in=[7,8,9]).order_by('-timestamp')
                 photo_locations=["%s%s%s%s"%(SITE_MEDIA,homedir,"/",x.filename) for x in photos if x.code != postcode]
-                variables=RequestContext(request,{'user':userobj,'filelocation':filelocation,'uploaded_by':username,'comments':list_comments,
-                                                  'photos':photo_locations,'hits':num_of_hits,'postcode':postcode})    
+                variables=RequestContext(request,{'user':userobj,'filelocation':filelocation,'uploaded_by':username,
+                                                  'comments':list_comments,'isowner':isowner,
+                                                  'photos':photo_locations,'hits':num_of_hits,'postcode':postcode})
+                    
                 return render_to_response('photo_attachments.html',variables)
             elif filetype == allowed_filetypes['folderalbum']:
                 
@@ -870,20 +876,23 @@ def postid(request,postidnum):
                 for photo in photo_objs:#give web location now, add static parent path
                     photo.src=os.path.join(SITE_MEDIA,homedir,post.filename,photo.src)
              
-                variables=RequestContext(request,{'user':userobj,'uploaded_by':username,'comments':list_comments,
+                variables=RequestContext(request,{'user':userobj,'uploaded_by':username,'comments':list_comments,'isowner':isowner,
                                                   'photos':photo_objs,'hits':num_of_hits,'postcode':postcode})
 
                 return render_to_response('album_attachment.html',variables)
 
                         
-            variables=RequestContext(request,{'user':userobj,'ispdf':ispdf,'isppt':isppt,'ismp3':ismp3,
+            variables=RequestContext(request,{'user':userobj,'isppt':isppt,'ismp3':ismp3,'isowner':isowner,
                                               'isflv':isflash,'ismp4':ismp4,'filelocation':filelocation,
                                               'uploaded_by':username,'comments':list_comments,'postcode':postcode,
                                               'hits':num_of_hits})
             return render_to_response('attachment.html',variables)
-                       
-    except Posts.DoesNotExist:
-        raise Http404    
+        
+        else:
+            return render_to_response('404.html')    
+ 
+    except Exception:
+        return render_to_response('404.html')    
    
     
 
@@ -892,6 +901,7 @@ def commentpost(request):
     from upload.comments import postcomment
     
     response_data={}
+    isowner = False
     if 'commenttext' in request.POST and 'postid' in request.session:
         postid=request.session['postid']
         
@@ -900,7 +910,9 @@ def commentpost(request):
         personobj=request.session['userprofile'].personobj
         user_comment=postcomment(origpost,text,personobj)
         #variables=Context({'comment':user_comment})
-        html= render_to_string('publishcomment.html',{'comment':user_comment},context_instance=RequestContext(request))
+        if personobj.username == origpost.ownerid.username:
+            isowner = True
+        html= render_to_string('publishcomment.html',{'comment':user_comment,'isowner':isowner},context_instance=RequestContext(request))
         response_data['status']=0
         response_data['html']=html
         return HttpResponse(simplejson.dumps(response_data),mimetype="application/json")
@@ -918,7 +930,7 @@ def markspam(request):
         
         markasspam(cid) # use celery to update spam .enhancement
     response_data={}
-    response_data['html']="<p> Reported as spam. comment will be deleted shortly </p>"
+    response_data['html']="Reported as spam. comment will be deleted shortly "
     return HttpResponse(simplejson.dumps(response_data),mimetype="application/json")
             
 @login_required
@@ -934,9 +946,10 @@ def sendmessage(request,tousername):
     try:
         topersonobj=person.objects.get(username=tousername)
         if 'Message' in request.POST:
-            msgtext=request.POST['Message']
-            msgtext=msgtext.strip()
-            if len(msgtext) > 0:
+            msgtext= request.POST['Message']
+            msgtext= msgtext.strip()
+            msglen = len(msgtext)
+            if  msglen > 0 and msglen < 100:
                 message=Messages()
                 message.from_user=frompersonobj
                 message.to_user=topersonobj
@@ -944,7 +957,8 @@ def sendmessage(request,tousername):
                 message.timestamp=timezone.now()
                 message.save()
                 return HttpResponse("<p> Message Sent Successfully </p> ")
-            return HttpResponse("<p> Error Occurred </p>")
+            else:
+                return HttpResponse("<p> Technical Hiccup. Message should not exceed 100 chars </p>")
         else:
             return HttpResponse("<p> Error Occurred </p>")
     except person.DoesNotExist:
@@ -1124,11 +1138,12 @@ def getrelatedposts(request,postidnum):
 
 def search(request):
     #from friends import searchfriends
-    MAX_COUNT=30
-    isajax=False
-    showmore=False
-    startcount=0
-    list_users=[]
+    MAX_COUNT = 30
+    isajax = False
+    showmore = False
+    startcount = 0
+    list_friends = []
+    list_persons = []
     if 'userprofile' in request.session:
         personobj=request.session['userprofile'].personobj
     else:
@@ -1146,28 +1161,21 @@ def search(request):
         search_words=str(request.GET['q'])
         if len(search_words) >= 3:
             search_list=search_words.split()
-            
-            #search friends
-            if personobj is not None:
-                list_friends=searchfriends(personobj,search_words)
-                if list_friends:
-                    list_users=[UserDetails(x) for x in list_friends]
-                
+         
             if len(search_list) > 1:
                 #add search by firstname, lastname also
-                users=list(person.objects.filter(reduce(lambda x, y: x | y, [Q(username__contains=word) for word in search_list])).filter(profiletype=1) [0:MAX_COUNT])  
+                users=list(person.objects.filter(reduce(lambda x, y: x | y, [Q(username__contains=word) for word in search_list])).filter(Q(profiletype=1)|Q(profiletype=2)) [0:MAX_COUNT])  
             else:
-                users=list(person.objects.filter(username__contains=search_words).filter(profiletype=1) [startcount:startcount+MAX_COUNT])
-            users=sorted(users,key=lambda x:levenshtein(search_words,x.username))
-            users=[UserDetails(x) for x in users]
-            users=set( users + list_users) # set will remove duplicates
+                users=list(person.objects.filter(username__contains=search_words).filter(Q(profiletype=1) | Q(profiletype=2) ) [startcount:startcount+MAX_COUNT])
+            users=sorted(users,key=lambda x:levenshtein(search_words,x.username))            
+            list_users=[UserDetails(x) for x in users]
             if isajax:
-                return render_to_response('search_results.html',{'users_list':users,'showmore':showmore})
+                return render_to_response('search_results.html',{'users_list':list_users,'showmore':showmore})
             else:
                 count=len(users)
                 if count < MAX_COUNT:
                     showmore=False
-                return render_to_response('search.html',{'users_list':users,'user':request.user,'showmore':showmore})
+                return render_to_response('search.html',{'users_list':list_users,'user':request.user,'showmore':showmore})
         else:
             return HttpResponse("<p> <b> No Results </b> </p>")
     

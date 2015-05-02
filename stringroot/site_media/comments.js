@@ -21,8 +21,12 @@ $("#list_comments").prepend(htmlcode).html();
 
 bind_reportspam();
 }
-
-} 
+//reset the submit button.
+var $count = $('.remaining span').text('80') ;
+$('input[type="submit"]').attr('disabled','disabled');
+$("#commentbutton").css("color","brown");
+ 
+}
 
 });
 
@@ -82,7 +86,7 @@ update();
 
 
 var bind_reportspam=function(){
-$("button.reportspam").click(function() {
+$("a.delcomment").click(function() {
 
 var jthis=$(this);
 var value="/reportspam/" ;
@@ -100,20 +104,20 @@ jQuery.extend({
             dataType: 'json',
             success: function(data) {
                 result = data['html'];
-				var $message = $('<div>').addClass('notification').html(result).css('left', (jthis).position().left); 
- 				jthis.parent().append($message);   
-				$message.slideDown("slow");
-				setTimeout(function() { $message.slideUp(200) }, 5000);  
- 
             }
-        }); // end ajax
-        
-        
+        }); // end ajax       
     }
 });
 
- var htmlStore = $.deleteComments(value,jthis);
-
+jConfirm('Are you sure you want to delete this Comment?', 'Confirmation Dialog', function(r) {
+										
+  if(r==true)
+  {
+	(jthis).parent().remove();
+	var htmlStore = $.deleteComments(value,jthis);
+    }
+ }); // end jConfirm 
+   
   return false; // prevent default
  
 }); // end click

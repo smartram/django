@@ -4,7 +4,7 @@ $("#loading").hide();
 
 $('input[type="submit"]').attr('disabled','disabled');
 
-$("#hexabutton").css("color","white");
+$("#hexabutton").css("color","brown");
 
 
 
@@ -89,6 +89,10 @@ $("#response").append(htmlcode).html();
 $("#response").slideDown("slow");
 setTimeout(function() { $("#response").slideUp(200) }, 6000);
 }
+//reset the submit button.
+var $count = $('.remaining span').text('160') ;
+$('input[type="submit"]').attr('disabled','disabled');
+$("#hexabutton").css("color","brown");
 
 } 
 

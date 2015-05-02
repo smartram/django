@@ -12,6 +12,11 @@ $('#chatform').ajaxForm({
 	 $("#chattext").val('');
 	 var htmlcode=data["html"];
 	 $("#list_chat").append(htmlcode).html();
+	 //reset the submit button.
+	var $count = $('.remaining span').text('80') ;
+	$('input[type="submit"]').attr('disabled','disabled');
+	$("#hexabutton").css("color","brown");
+	 // set the height now.
 	 var objDiv = document.getElementById("chatwindow");
 	 objDiv.scrollTop = objDiv.scrollHeight;
 

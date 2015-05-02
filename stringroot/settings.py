@@ -26,8 +26,8 @@ EMAIL_HOST_PASSWORD = 'Vparker1-2'
 DEFAULT_FROM_EMAIL = 'admin@stringroot.com'
 SERVER_EMAIL = 'admin@stringroot.com'
     
-import socket
-DEFAULT_MACHINE=socket.gethostbyname(socket.gethostname())
+#import socket
+#DEFAULT_MACHINE=socket.gethostbyname(socket.gethostname())
 
 DATABASES = {
     'default': {

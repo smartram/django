@@ -145,6 +145,7 @@ more_click();
 <ul id="list_users">
 {% autoescape off %}
 
+{% if users_list %}
 {% for fri in users_list %}
 
 <li class="people">
@@ -159,6 +160,10 @@ more_click();
 </li>
 
 {% endfor %}
+
+{% else %}
+<p> <b> No Results </b> </p>
+{% endif %}
 
 {% if showmore %}
 <a  href="#" id="more">more </a>

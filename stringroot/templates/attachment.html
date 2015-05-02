@@ -10,7 +10,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" >
   <link rel="stylesheet" type="text/css" href="/css/reset_2.css" media="screen">
   <link rel="stylesheet" type="text/css" href="/css/960.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="/css/style_others.css?ver=1" media="screen">
+  <link rel="stylesheet" type="text/css" href="/css/style_others.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/css/stringroot.alert.css" >
+
   <link rel="stylesheet" type="text/css"
    href="http://releases.flowplayer.org/5.2.0/skin/minimalist.css" >
   <link href="/css/jquery.liveSearch.css" rel="stylesheet" type="text/css" >
@@ -59,7 +61,11 @@ please enable java script.
 	<script type="text/javascript" src="/site_media/browser.js">
 
 	</script>
-	
+
+   <script type="text/javascript" src="/site_media/jquery.alerts.js">
+
+	</script>
+
     <script type="text/javascript" src="/site_media/comments.js">
 
      </script>
@@ -149,7 +155,7 @@ please enable java script.
 {% endif %}
 
 {% if isppt %}
-<iframe src="http://docs.google.com/gview?url=http://www.stringroot.com/{{filelocation}}&embedded=true" style="width:400px; height:500px;" frameborder="0"></iframe>
+<iframe src="https://docs.google.com/gview?url=http://www.stringroot.com{{filelocation}}&embedded=true" style="width:475px; height:600px;" frameborder="0"></iframe>
 
 {% endif %}
 

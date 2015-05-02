@@ -84,19 +84,17 @@ def addfriend(request,tousername):
         if tousername in dict_friends:
             return False # already a friend. something error happened
         
-        else: #we have person object of user, so add it to db.    
-            friendship,create = RelationShip.objects.get_or_create(from_friend=frompersonobj, to_friend=topersonobj)
+        else: #we have person object of user, so add it to cache.    
+            #friendship,create = RelationShip.objects.get_or_create(from_friend=frompersonobj, to_friend=topersonobj)
             dict_friends[tousername]=topersonobj
             cache.set(fkey,dict_friends)
-            setnumoffriends(frompersonobj)
-            return True
-    else:#cache empty
+    try:
         friendship,create = RelationShip.objects.get_or_create(from_friend=frompersonobj, to_friend=topersonobj)
-    
-
         if create:
             setnumoffriends(frompersonobj)
             return True
+    except Exception:
+        pass
     return False
 
 def showfriends(personobj,count=0):
@@ -123,21 +121,22 @@ def deletefriend(request,tousername):
         frompersonobj=fromuser.personobj
     
     
-    if dict_friends is not None:# cache exists. remove from cache and also update db.
+    if dict_friends is not None:# cache exists. remove from cache 
         if tousername in dict_friends:
             dict_friends[tousername]=""
             del dict_friends[tousername]
             cache.set(fkey,dict_friends)
-            f=RelationShip.objects.get(from_friend=frompersonobj,to_friend=topersonobj)
-            f.delete()
-            cache.set(ckey,len(dict_friends))
-            return True
+            cache.set(ckey,len(dict_friends))        
         else:#not ur friend itself. friend not in cache
             return False
-    else: # cache empty, just update the db itself.
+    try:
         f=RelationShip.objects.get(from_friend=frompersonobj,to_friend=topersonobj)
         f.delete()
         return True
+    except Exception:
+        pass
+    
+    return False
    
 def checkfriend(username,tousername):
     fkey=username + ".friends"

@@ -206,8 +206,9 @@ jConfirm('Are you sure you want to delete this post?', 'Confirmation Dialog', fu
 		$("#resp_dialog").empty();
 		 $("#resp_dialog").append(data);
 		 $("#Message").val('');
+		 $("#resp_dialog").slideDown("slow");
+		 setTimeout(function() { $("#resp_dialog").slideUp(200) }, 3000);
 		 return false;
-
 		 }
 
 		 });
