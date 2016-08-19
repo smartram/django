@@ -748,6 +748,10 @@ def deletepost(request,postnum):
     response_data={}
     response_data['status']=1
     response_data['html']="error occurred "
+   
+    if request.method != 'DELETE':
+        return HttpResponse(simplejson.dumps(response_data),mimetype="application/json")
+      
     postid=int(postnum)
     if 'userprofile' in request.session:
         personobj=request.session['userprofile'].personobj
