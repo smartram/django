@@ -19,7 +19,7 @@ jQuery.extend({
         var result = null;
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'DELETE',
             dataType: 'json',
             async: false,
             success: function(data) {
